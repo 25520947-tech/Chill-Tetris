@@ -127,6 +127,18 @@ int main()
         if (canMove(0,1)) y++;
         else{
             block2Board();
+            bool isOver = false;
+            for (int j = 1; j < W - 1; j++) {
+                if (board[2][j] != ' ') {
+                    isOver = true;
+                    break;
+                }
+            }
+            if (isOver) {
+                draw();
+                cout << "\n   GAME OVER! Tro choi ket thuc." << endl;
+                break;
+            }
             x = 5; y = 0; b = rand()%7;
         }
         block2Board();
