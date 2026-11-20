@@ -154,7 +154,19 @@ int main()
         else{
             block2Board();
             removeLine();
-            x = 5; y = 0; b = rand()%7;
+            bool isOver = false;
+            for (int j = 1; j < W - 1; j++) {
+                if (board[2][j] != ' ') {
+                    isOver = true;
+                    break;
+                  }
+         }
+    if (isOver) {
+        draw();
+        cout << "\n   GAME OVER! Tro choi ket thuc." << endl;
+        break;
+    }
+    x = 5; y = 0; b = rand()%7;
             loadActiveBlock();
         }
         block2Board();
