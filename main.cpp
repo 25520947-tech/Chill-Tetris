@@ -2,6 +2,7 @@
 #include <conio.h>
 #include <cstdlib>
 #include <ctime>
+#include "removeLine.h"
 
 
 using namespace std;
@@ -152,6 +153,7 @@ int main()
         if (canMove(0,1)) y++;
         else{
             block2Board();
+            removeLine();
             x = 5; y = 0; b = rand()%7;
             loadActiveBlock();
         }
