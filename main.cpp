@@ -1,10 +1,15 @@
 #include <iostream>
 #include <conio.h>
+#include <cstdlib>
 #include <ctime>
+
 
 using namespace std;
 #define H 20
 #define W 15
+
+#include "rotation.h"
+
 char board[H][W] = {};
 
 int x, y, b;
@@ -74,29 +79,46 @@ char blocks[][4][4] ={
          {'L','L','L',' '},
          {' ',' ',' ',' '}}
 };
-bool canMove(int dx, int dy){
-    for (int i = 0; i < 4; i++ )
-        for (int j = 0; j < 4; j++ )
-            if (blocks[b][i][j] != ' ') {
+
+char activeBlock[4][4];
+
+void loadActiveBlock() {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            activeBlock[i][j] = blocks[b][i][j];
+}
+
+bool canMove(int dx, int dy) {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (activeBlock[i][j] != ' ') {
                 int xt = x + j + dx;
                 int yt = y + i + dy;
-                if (xt < 1 || xt >= W-1 || yt >= H-1 ) return false;
-                if (board[yt][xt] != ' ') return false;
+
+                if (xt < 1 || xt >= W - 1 || yt >= H - 1)
+                    return false;
+
+                if (board[yt][xt] != ' ')
+                    return false;
             }
+
     return true;
 }
-void block2Board(){
-    for (int i = 0; i < 4; i++ )
-        for (int j = 0; j < 4; j++ )
-            if (blocks[b][i][j] != ' ')
-                board[y+i][x+j] = blocks[b][i][j];
+
+void block2Board() {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (activeBlock[i][j] != ' ')
+                board[y + i][x + j] = activeBlock[i][j];
 }
-void boardDelBlock(){
-    for (int i = 0; i < 4; i++ )
-        for (int j = 0; j < 4; j++ )
-            if (blocks[b][i][j] != ' ')
-                board[y+i][x+j] = ' ';
+
+void boardDelBlock() {
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            if (activeBlock[i][j] != ' ')
+                board[y + i][x + j] = ' ';
 }
+
 void initBoard(){
     for (int i = 0 ; i < H ; i++)
         for (int j = 0 ; j < W ; j++)
@@ -115,6 +137,7 @@ int main()
     srand(time(0));
     x = 5; y = 0; b = rand()%7;
     initBoard();
+    loadActiveBlock();
     while (1){
         boardDelBlock();
         if (kbhit()){
@@ -122,6 +145,8 @@ int main()
             if (c == 'a' && canMove(-1,0)) x--;
             if (c == 'd' && canMove( 1,0)) x++;
             if (c == 'x' && canMove( 0,1)) y++;
+            if (c == 'w' || c == 'W')
+                rotateBlock(activeBlock, board, x, y);
             if (c == 'q') break;
         }
         if (canMove(0,1)) y++;
@@ -140,6 +165,7 @@ int main()
                 break;
             }
             x = 5; y = 0; b = rand()%7;
+            loadActiveBlock();
         }
         block2Board();
         draw();
