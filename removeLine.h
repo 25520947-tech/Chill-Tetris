@@ -10,4 +10,4 @@
 
 extern char board[H][W];
 void draw();
-void removeLine();
+int removeLine();
