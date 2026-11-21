@@ -1,9 +1,11 @@
 #include <cstdlib>
+#include <windows.h>
 #include "removeLine.h"
 
-void removeLine()
+int removeLine()
 {
     int i, j;
+    int cleared = 0;
     for(i = H - 2; i > 0; --i)
     {
         for(j = 1; j < W - 1; ++j)
@@ -21,7 +23,8 @@ void removeLine()
 
             ++i;
             draw();
-            _sleep(200);
+            Sleep(200);
         }
     }
+    return cleared;
 }
