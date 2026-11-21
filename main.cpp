@@ -18,8 +18,8 @@ int x, y, b;
 
 // Phần 5 khai báo hằng số và biến quản lí tốc độ rơi
 const int TOC_DO_BAN_DAU = 500;
-const int TOC_DO_NHANH_NHAT = 100;  
-const int BUOC_GIAM_THOI_GIAN = 40; 
+const int TOC_DO_NHANH_NHAT = 100;
+const int BUOC_GIAM_THOI_GIAN = 40;
 int tocDoRoi = TOC_DO_BAN_DAU;
 int tongSoDongDaXoa = 0;
 
@@ -129,10 +129,10 @@ void boardDelBlock() {
                 board[y + i][x + j] = ' ';
 }
 
-void initBoard(){
-    for (int i = 0 ; i < H ; i++)
-        for (int j = 0 ; j < W ; j++)
-            if (i == 0 || i == H-1 || j ==0 || j == W-1) board[i][j] = '#';
+void initBoard() {
+    for (int i = 0; i < H; i++)
+        for (int j = 0; j < W; j++)
+            if (i == 0 || i == H - 1 || j == 0 || j == W - 1) board[i][j] = '#';
             else board[i][j] = ' ';
 }
 
@@ -176,18 +176,18 @@ void draw() {
 
 int main() {
     SetConsoleOutputCP(65001); // Bat UTF-8 de hien thi ky tu khung va khoi dac
-    srand(time(0));
+    srand(static_cast<unsigned int>(time(0)));
     x = 5; y = 0; b = rand() % 7;
     initBoard();
     loadActiveBlock();
 
     while (1) {
         boardDelBlock();
-        if (kbhit()) {
-            char c = getch();
-            if (c == 'a' && canMove(-1,0)) x--;
-            if (c == 'd' && canMove( 1,0)) x++;
-            if (c == 'x' && canMove( 0,1)) y++;
+        if (_kbhit()) {
+            char c = _getch();
+            if (c == 'a' && canMove(-1, 0)) x--;
+            if (c == 'd' && canMove(1, 0)) x++;
+            if (c == 'x' && canMove(0, 1)) y++;
             if (c == 'w' || c == 'W')
                 rotateBlock(activeBlock, board, x, y);
             if (c == 'q') break;
@@ -215,7 +215,7 @@ int main() {
                 break;
             }
 
-            x = 5; y = 0; b = rand()%7;
+            x = 5; y = 0; b = rand() % 7;
             loadActiveBlock();
         }
         block2Board();
