@@ -1,11 +1,9 @@
 #include <iostream>
 #include <conio.h>
-
 using namespace std;
 #define H 20
 #define W 15
 char board[H][W] = {};
-
 int x, y, b;
 char blocks[][4][4] ={
         {{' ','I',' ',' '},
