@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "removeLine.h"
+#include "color.h"
 
 using namespace std;
 
@@ -151,24 +152,60 @@ void CapNhatTocDo(int SoDongXoa) {
 // Phan 2: chinh sua lai khung vien va khoi sao cho vuong vuc
 void draw() {
     system("cls");
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD cursorPos = {0, 0};
     for (int i = 0; i < H; i++) {
         for (int j = 0; j < W; j++) {
             // Ve 4 goc khung vien
-            if (i == 0 && j == 0) cout << " ╔";
-            else if (i == 0 && j == W - 1) cout << "╗ ";
-            else if (i == H - 1 && j == 0) cout << " ╚";
-            else if (i == H - 1 && j == W - 1) cout << "╝ ";
+            if (i == 0 && j == 0)
+            {
+                setColor(getCellColor('#'));
+                cout << " ╔";
+            }
+            else if (i == 0 && j == W - 1) 
+            {
+                setColor(getCellColor('#'));
+                cout << "╗ ";
+            }
+            else if (i == H - 1 && j == 0)
+            {
+                setColor(getCellColor('#'));
+                cout << " ╚";
+            }
+            else if (i == H - 1 && j == W - 1)
+            {
+                setColor(getCellColor('#'));                
+                cout << "╝ ";
+            }
             // Ve canh tren va canh duoi
-            else if (i == 0 || i == H - 1) cout << "══";
+            else if (i == 0 || i == H - 1)
+            {
+                setColor(getCellColor('#'));
+                cout << "══";
+            }
             // Ve canh trai va canh phai (ap sat vao long bang)
-            else if (j == 0) cout << " ║";
-            else if (j == W - 1) cout << "║ ";
+            else if (j == 0)
+            {
+                setColor(getCellColor('#'));
+                cout << " ║";
+            }
+            else if (j == W - 1)
+            {
+                setColor(getCellColor('#'));
+                cout << "║ ";
+            }
             // Ve long bang: khoang trong hoac block vuong
             else if (board[i][j] == ' ') cout << "  ";
-            else cout << "██";
+            else
+            {
+                setColor(getCellColor(board[i][j]));
+                cout << "██";
+            }
         }
         cout << '\n';
     }
+
+    setColor(7); // Trả về màu trắng mặc đinh của console
     // Phần 5:Hiển thị thông số để quan sát tốc độ rơi
     cout << " So dong da xoa: " << tongSoDongDaXoa
         << " | Toc do (ms): " << tocDoRoi << '\n';
