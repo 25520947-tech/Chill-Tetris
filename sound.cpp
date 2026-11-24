@@ -18,3 +18,8 @@ namespace {
 void sound_DiChuyenNgang() {
     phatAmHeThong((LPCWSTR)SND_ALIAS_SYSTEMASTERISK); 
 }
+
+void sound_XoayKhoi() {
+    std::cout << "\a";
+    
+}
