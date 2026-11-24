@@ -7,4 +7,14 @@ void sound_BatDauNhacNen() {
     Beep(220, 90);  
     Beep(262, 110);
 }
+ 
+namespace {
+    // Phát một âm thanh hệ thống 
+    void phatAmHeThong(LPCWSTR aliasId) {
+        PlaySoundW(aliasId, NULL, SND_ALIAS_ID | SND_ASYNC | SND_NODEFAULT);
+    }
+}
 
+void sound_DiChuyenNgang() {
+    phatAmHeThong((LPCWSTR)SND_ALIAS_SYSTEMASTERISK); 
+}
