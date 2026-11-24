@@ -30,3 +30,9 @@ void sound_XoaKhoi() {
     Beep(392, 110); 
     Beep(523, 280); 
 }
+
+void sound_KetThuc() {
+    Beep(392, 120);
+    Beep(293, 180);
+    Beep(193, 240);
+}
