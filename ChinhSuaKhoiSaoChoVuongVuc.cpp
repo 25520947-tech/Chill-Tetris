@@ -20,3 +20,6 @@ void draw() {
         cout << '\n';
     }
 }
+
+// Bật UTF-8 để hiển thị ký tự khung và khối đặc
+//SetConsoleOutputCP(65001);
