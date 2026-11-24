@@ -23,3 +23,10 @@ void sound_XoayKhoi() {
     std::cout << "\a";
     
 }
+
+void sound_XoaKhoi() {
+    Beep(262, 110); 
+    Beep(330, 110); 
+    Beep(392, 110); 
+    Beep(523, 280); 
+}
