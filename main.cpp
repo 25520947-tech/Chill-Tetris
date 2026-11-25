@@ -220,15 +220,26 @@ int main() {
 
     while (1) {
         boardDelBlock();
-        if (_kbhit()) {
-            char c = _getch();
-            if (c == 'a' && canMove(-1, 0)) x--;
-            if (c == 'd' && canMove(1, 0)) x++;
-            if (c == 'x' && canMove(0, 1)) y++;
-            if (c == 'w' || c == 'W')
-                rotateBlock(activeBlock, board, x, y);
-            if (c == 'q') break;
+        if (_kbhit()) 
+        {
+            int key = _getch();
+
+            // Xử lý s, mũi tên xuống và Space
+            handleDropInput(key);
+
+            if (key != 0 && key != 0xE0) 
+            {
+                char c = static_cast<char>(key);
+
+                if (c == 'a' && canMove(-1, 0)) x--;
+                if (c == 'd' && canMove(1, 0)) x++;
+                if (c == 'x' && canMove(0, 1)) y++;
+                if (c == 'w' || c == 'W')
+                    rotateBlock(activeBlock, board, x, y);
+                if (c == 'q') break;
+            }
         }
+
         if (canMove(0, 1)) {
             y++;
         }
