@@ -116,6 +116,36 @@ bool canMove(int dx, int dy) {
     return true;
 }
 
+void softDrop() {
+    // Xuống nhanh một hàng
+    if (canMove(0, 1))
+        y++;
+}
+
+void hardDrop() {
+    // Space đưa khối xuống vị trí thấp nhất có thể
+    while (canMove(0, 1))
+        y++;
+}
+
+void handleDropInput(int key) {
+    // Phím mũi tên trong _getch() gồm mã mở rộng rồi đến mã phím
+    if (key == 0 || key == 0xE0) {
+        int arrowKey = _getch();
+
+        // 80 là mã mũi tên xuống
+        if (arrowKey == 80)
+            softDrop();
+
+        return;
+    }
+
+    if (key == 's' || key == 'S')
+        softDrop();
+    else if (key == ' ')
+        hardDrop();
+}
+
 void block2Board() {
     for (int i = 0; i < 4; i++)
         for (int j = 0; j < 4; j++)
@@ -220,15 +250,26 @@ int main() {
 
     while (1) {
         boardDelBlock();
-        if (_kbhit()) {
-            char c = _getch();
-            if (c == 'a' && canMove(-1, 0)) x--;
-            if (c == 'd' && canMove(1, 0)) x++;
-            if (c == 'x' && canMove(0, 1)) y++;
-            if (c == 'w' || c == 'W')
-                rotateBlock(activeBlock, board, x, y);
-            if (c == 'q') break;
+        if (_kbhit()) 
+        {
+            int key = _getch();
+
+            // Xử lý s, mũi tên xuống và Space
+            handleDropInput(key);
+
+            if (key != 0 && key != 0xE0) 
+            {
+                char c = static_cast<char>(key);
+
+                if (c == 'a' && canMove(-1, 0)) x--;
+                if (c == 'd' && canMove(1, 0)) x++;
+                if (c == 'x' && canMove(0, 1)) y++;
+                if (c == 'w' || c == 'W')
+                    rotateBlock(activeBlock, board, x, y);
+                if (c == 'q') break;
+            }
         }
+
         if (canMove(0, 1)) {
             y++;
         }
