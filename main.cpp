@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include "removeLine.h"
+#include "sound.h"
 
 using namespace std;
 
@@ -180,16 +181,26 @@ int main() {
     x = 5; y = 0; b = rand() % 7;
     initBoard();
     loadActiveBlock();
+    initSound(); // Khoi tao he thong am thanh
+    sound_BatDauNhacNen(); // Bat dau phat nhac nen
 
     while (1) {
         boardDelBlock();
         if (_kbhit()) {
             char c = _getch();
-            if (c == 'a' && canMove(-1, 0)) x--;
-            if (c == 'd' && canMove(1, 0)) x++;
+            if (c == 'a' && canMove(-1, 0)) {
+                x--;
+                sound_DiChuyenNgang();
+            }
+            if (c == 'd' && canMove(1, 0)) {
+                x++;
+                sound_DiChuyenNgang();
+            }
             if (c == 'x' && canMove(0, 1)) y++;
-            if (c == 'w' || c == 'W')
+            if (c == 'w' || c == 'W') {
                 rotateBlock(activeBlock, board, x, y);
+                sound_XoayKhoi();
+            }
             if (c == 'q') break;
         }
         if (canMove(0, 1)) {
@@ -201,6 +212,10 @@ int main() {
             // Phần 5: Gọi removeLine() và cập nhập tốc độ rơi
             int SoDongXoa = removeLine();
             CapNhatTocDo(SoDongXoa);
+            
+            if (SoDongXoa > 0) {
+                sound_XoaKhoi();// Phat am thanh khi co hang duoc xoa
+            }
 
             bool isOver = false;
             for (int j = 1; j < W - 1; j++) {
@@ -211,7 +226,12 @@ int main() {
             }
             if (isOver) {
                 draw();
-                cout << "\n   GAME OVER! Tro choi ket thuc." << endl;
+                cout << "\n";
+                cout << "           GAME OVER!" << endl;
+                cout << "       Hay choi lai nhe!!" << endl;
+
+                sound_KetThuc();
+                Sleep(1500);
                 break;
             }
 
@@ -224,5 +244,6 @@ int main() {
         // Phần 5: dùng Sleep(tocDoRoi) thay cho _sleep(500)
         Sleep(tocDoRoi);
     }
+    closeSound();
     return 0;
 }
