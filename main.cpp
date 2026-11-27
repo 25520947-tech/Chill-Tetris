@@ -5,6 +5,8 @@
 #include <ctime>
 #include "removeLine.h"
 #include "sound.h"
+#include "color.h"
+
 using namespace std;
 
 #define H 20
@@ -241,67 +243,77 @@ void draw() {
 }
 
 int main() {
-    srand(time(0));
-    b = rand() % 7;
-
+    SetConsoleOutputCP(65001); // Bat UTF-8 de hien thi ky tu khung va khoi dac
+    srand(static_cast<unsigned int>(time(0)));
+    x = 5; y = 0; b = rand() % 7;
     initBoard();
     loadActiveBlock();
-
-    initSound();            // Khoi tao he thong am thanh
-    sound_BatDauNhacNen();  // Bat dau phat nhac nen
+    initSound(); // Khoi tao he thong am thanh
+    sound_BatDauNhacNen(); // Bat dau phat nhac nen
 
     while (1) {
         boardDelBlock();
 
         if (_kbhit()) {
-            char c = _getch();
-            if (c == 'a' && canMove(-1, 0)) {
-                x--;
-                sound_DiChuyenNgang();
+            int key = _getch();
+
+            // Xu ly phim S, mui ten xuong va Space
+            handleDropInput(key);
+
+            if (key != 0 && key != 0xE0) {
+                char c = static_cast<char>(key);
+
+                if (c == 'a' && canMove(-1, 0)) {
+                    x--;
+                    sound_DiChuyenNgang();
+                }
+
+                if (c == 'd' && canMove(1, 0)) {
+                    x++;
+                    sound_DiChuyenNgang();
+                }
+
+                if (c == 'x' && canMove(0, 1))
+                    y++;
+
+                if (c == 'w' || c == 'W') {
+                    rotateBlock(activeBlock, board, x, y);
+                    sound_XoayKhoi();
+                }
+
+                if (c == 'q')
+                    break;
             }
-            if (c == 'd' && canMove(1, 0)) {
-                x++;
-                sound_DiChuyenNgang();
-            }
-            if (c == 's' && canMove(0, 1)) {
-                y++;
-            }
-            if (c == 'w' || c == 'W') {
-                rotateBlock(activeBlock, board, x, y);
-                sound_XoayKhoi();
-            }
-            if (c == 'q') break;
         }
 
         if (canMove(0, 1)) {
             y++;
-        } else {
-            blockToBoard();
+        }
+        else {
+            block2Board();
 
-            // Phan 5: Goi removeLine() va cap nhat toc do roi
+            // Phần 5: Gọi removeLine() và cập nhập tốc độ rơi
             int SoDongXoa = removeLine();
             CapNhatTocDo(SoDongXoa);
 
             if (SoDongXoa > 0) {
-                sound_XoaKhoi(); // Phat am thanh khi co hang duoc xoa
+                sound_XoaKhoi();// Phat am thanh khi co hang duoc xoa
             }
 
             bool isOver = false;
             for (int j = 1; j < W - 1; j++) {
-                if (board[1][j] == '#') {
+                if (board[2][j] != ' ') {
                     isOver = true;
                     break;
                 }
             }
-
             if (isOver) {
                 draw();
-                sound_KetThuc();
-
                 cout << "\n";
-                cout << "\n       GAME OVER! Tro choi ket thuc." << endl;
-                cout << "               Hay choi lai nhe!!" << endl;
-                cout << endl;
+                cout << "           GAME OVER!" << endl;
+                cout << "       Hay choi lai nhe!!" << endl;
+
+                sound_KetThuc();
                 Sleep(1500);
                 break;
             }
@@ -312,10 +324,9 @@ int main() {
         block2Board();
         draw();
 
-        // Phan 5: dung Sleep(tocDoRoi) thay cho Sleep(500)
+        // Phần 5: dùng Sleep(tocDoRoi) thay cho _sleep(500)
         Sleep(tocDoRoi);
     }
-
     closeSound();
     return 0;
 }
