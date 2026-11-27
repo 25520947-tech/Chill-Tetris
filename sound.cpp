@@ -1,13 +1,12 @@
 // Tao phan cai dat cua thu vien Miniaudio
 #define MINIAUDIO_IMPLEMENTATION
+
 #include "miniaudio.h" // Thu vien am thanh
 #include <iostream>
 #include "sound.h"
-
 using namespace std;
 
-ma_engine engine; // Doi tuong quan ly he thong am thanh
-
+ma_engine engine;// Doi tuong quan ly he thong am thanh
 // Cac doi tuong am thanh trong game
 ma_sound nhacNen;
 ma_sound diChuyen;
@@ -18,8 +17,10 @@ ma_sound ketThuc;
 // Kiem tra he thong am thanh
 bool soundOK = false;
 
+
 // Khoi tao he thong am thanh
 void initSound() {
+
     // Khoi tao engine am thanh
     if (ma_engine_init(NULL, &engine) != MA_SUCCESS) {
         cout << "Khong khoi tao duoc am thanh!" << endl;
@@ -66,9 +67,8 @@ void initSound() {
 // Ham phat am thanh dung chung
 void playSound(ma_sound* sound) {
     if (!soundOK) return; // Neu am thanh chua khoi tao thi khong phat
-
     ma_sound_seek_to_pcm_frame(sound, 0); // Dua am thanh ve vi tri ban dau
-    ma_sound_start(sound);                // Phat am thanh
+    ma_sound_start(sound);// Phat am thanh
 }
 
 // Bat dau phat nhac nen
@@ -77,15 +77,17 @@ void sound_BatDauNhacNen() {
     ma_sound_start(&nhacNen); // Phat nhac nen
 }
 
+
 // Phat am thanh khi di chuyen ngang
 void sound_DiChuyenNgang() {
     playSound(&diChuyen); // Phat am thanh di chuyen
 }
 
+
 // Phat am thanh khi xoay khoi
 void sound_XoayKhoi() {
     playSound(&xoayKhoi); // Phat am thanh xoay
-}
+} 
 
 // Phat am thanh khi xoa hang
 void sound_XoaKhoi() {
@@ -94,25 +96,24 @@ void sound_XoaKhoi() {
 
 // Phat am thanh khi ket thuc game
 void sound_KetThuc() {
-    if (!soundOK) return; // Neu he thong chua khoi tao thi khong xu ly
-    ma_sound_stop(&nhacNen); // Dung nhac nen
-    playSound(&ketThuc);     // Phat am thanh ket thuc
+    if (!soundOK) return;// Neu he thong chua khoi tao thi khong xu ly
+    ma_sound_stop(&nhacNen);  // Dung nhac nen
+    playSound(&ketThuc);// Phat am thanh ket thuc
 }
+
 
 // Dong he thong am thanh
 void closeSound() {
-    if (!soundOK) return; // Neu he thong chua khoi tao thi khong dong
 
+    if (!soundOK) return;   // Neu he thong chua khoi tao thi khong dong
     // Giai phong cac am thanh
     ma_sound_uninit(&ketThuc);
     ma_sound_uninit(&xoaKhoi);
     ma_sound_uninit(&xoayKhoi);
     ma_sound_uninit(&diChuyen);
     ma_sound_uninit(&nhacNen);
-
     // Giai phong engine
     ma_engine_uninit(&engine);
-
     // Danh dau he thong da dong
     soundOK = false;
 }
